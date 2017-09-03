@@ -2,4 +2,4 @@ Infra
 =======
 
 
-DevOps course, GCP practice 1
+DevOps course, GCP practice 6
