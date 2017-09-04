@@ -1,4 +1,7 @@
-nstall_mongodb.sh
+#!/bin/sh
+
+
+# File install_mongodb.sh
 echo "Start install MongoDB"
 
 # Add server
