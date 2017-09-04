@@ -1,12 +1,9 @@
-#!/bin/sh
-
-
-# File install_mongodb.sh
+nstall_mongodb.sh
 echo "Start install MongoDB"
 
 # Add server
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntuxenial/mongodb-org/3.2 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.2.list'
+sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.2.list'
 
 # Update index and install MongoDB
 sudo apt-get update
