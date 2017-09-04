@@ -5,8 +5,7 @@
 echo "Start deploy"
 
 # Download project
-mkdir git
-cd git/
+cd ~
 git clone https://github.com/Artemmkin/reddit.git
 
 # Install dependencies
