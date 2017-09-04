@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 # File install_ruby.sh
