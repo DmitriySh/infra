@@ -5,14 +5,13 @@
 echo "Start deploy"
 
 # Download project
-cd ~
-git clone https://github.com/Artemmkin/reddit.git
+git clone https://github.com/Artemmkin/reddit.git ~/reddit
 
 # Install dependencies
-cd reddit && bundle install
+~/reddit/bundle install
 
 # Run server
-puma -d
+~/reddit/puma -d
 
 echo "End deploy"
 
