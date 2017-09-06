@@ -5,11 +5,8 @@ echo path: `pwd`
 
 sudo -u appuser git clone https://github.com/Artemmkin/reddit.git /home/appuser/reddit
 cd /home/appuser/reddit
-echo path: `pwd`
 
 echo "Start install Ruby"
-su - appuser
-echo user: `whoami`
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 curl -sSL https://get.rvm.io | bash -s stable
 source ~/.rvm/scripts/rvm
@@ -19,9 +16,7 @@ rvm use 2.4.1 --default
 gem install bundler -V --no-ri --no-rdoc
 ruby -v
 gem -v bundler
-exit
 echo "End install Ruby"
-
 
 
 
@@ -37,10 +32,7 @@ echo "End install MongoDB"
 
 
 echo "Start deploy"
-su -u appuser
-# source ~/.rvm/scripts/rvm
 bundle install
 puma -d
-exit
 echo "End deploy"
 
