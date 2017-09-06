@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo user: `whoami`
+echo path: `pwd`
+sudo -u dima bash
+echo change user: `whoami`
+
+
 echo "Start install Ruby"
 
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
