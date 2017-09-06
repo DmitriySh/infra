@@ -2,7 +2,7 @@
 
 echo user: `whoami`
 echo path: `pwd`
-sudo -u dima bash
+sudo -u appuser bash
 echo change user: `whoami`
 
 
