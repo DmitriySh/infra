@@ -15,8 +15,8 @@ rvm requirements
 rvm install 2.4.1
 rvm use 2.4.1 --default
 gem install bundler -V --no-ri --no-rdoc
-ruby -v
-gem -v bundler
+echo ruby version: `ruby -v`
+echo gem version: ]`gem -v bundler`
 
 echo "End install Ruby"
 
@@ -38,9 +38,10 @@ echo "End install MongoDB"
 
 echo "Start deploy"
 
-git clone https://github.com/Artemmkin/reddit.git ~/reddit
-cd ~/reddit
-source ~/.rvm/scripts/rvm
+sudo -u appuser `git clone https://github.com/Artemmkin/reddit.git /home/appuser/reddit`
+cd /home/appuser/reddit
+# git clone https://github.com/Artemmkin/reddit.git ~/reddit
+# cd ~/reddit
 bundle install
 puma -d
 
