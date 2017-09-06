@@ -10,13 +10,13 @@ echo "Start install Ruby"
 
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 curl -sSL https://get.rvm.io | bash -s stable
-source ~/.rvm/scripts/rvm
-rvm requirements
-rvm install 2.4.1
-rvm use 2.4.1 --default
-gem install bundler -V --no-ri --no-rdoc
+sudo -u appuser `source ~/.rvm/scripts/rvm`
+sudo -u appuser `rvm requirements`
+sudo -u appuser `rvm install 2.4.1`
+sudo -u appuser `rvm use 2.4.1 --default`
+sudo -u appuser `gem install bundler -V --no-ri --no-rdoc`
 echo ruby version: `ruby -v`
-echo gem version: ]`gem -v bundler`
+echo gem version: `gem -v bundler`
 
 echo "End install Ruby"
 
@@ -42,8 +42,8 @@ sudo -u appuser `git clone https://github.com/Artemmkin/reddit.git /home/appuser
 cd /home/appuser/reddit
 # git clone https://github.com/Artemmkin/reddit.git ~/reddit
 # cd ~/reddit
-bundle install
-puma -d
+sudo -u appuser `bundle install`
+sudo -u appuser `puma -d`
 
 echo "End deploy"
 
