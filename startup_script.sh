@@ -5,17 +5,21 @@ echo path: `pwd`
 
 sudo -u appuser git clone https://github.com/Artemmkin/reddit.git /home/appuser/reddit
 cd /home/appuser/reddit
+echo path: `pwd`
 
 echo "Start install Ruby"
-sudo -u appuser pg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-sudo -u appuser curl -sSL https://get.rvm.io | bash -s stable
-sudo -u appuser source ~/.rvm/scripts/rvm
-sudo -u appuser rvm requirements
-sudo -u appuser rvm install 2.4.1
-sudo -u appuser rvm use 2.4.1 --default
-sudo -u appuser gem install bundler -V --no-ri --no-rdoc
-echo ruby version: `sudo -u appuser ruby -v`
-echo gem version: `sudo -u appuser gem -v bundler`
+sudo -u appuser bash
+echo user: `whoami`
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+rvm requirements
+rvm install 2.4.1
+rvm use 2.4.1 --default
+gem install bundler -V --no-ri --no-rdoc
+ruby -v
+gem -v bundler
+exit
 echo "End install Ruby"
 
 
@@ -33,8 +37,10 @@ echo "End install MongoDB"
 
 
 echo "Start deploy"
-sudo -u appuser source ~/.rvm/scripts/rvm
-sudo -u appuser bundle install
-sudo -u appuser puma -d
+sudo -u appuser bash
+# source ~/.rvm/scripts/rvm
+bundle install
+puma -d
+exit
 echo "End deploy"
 
