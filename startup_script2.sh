@@ -1,10 +1,10 @@
 #!/bin/bash
 
+cd ~
+
+
 echo user: `whoami`
 echo path: `pwd`
-
-sudo -u appuser git clone https://github.com/Artemmkin/reddit.git /home/appuser/reddit
-cd /home/appuser/reddit
 
 echo "Start install Ruby"
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
@@ -32,6 +32,8 @@ echo "End install MongoDB"
 
 
 echo "Start deploy"
+sudo -u appuser git clone https://github.com/Artemmkin/reddit.git
+cd reddit/
 bundle install
 puma -d
 echo "End deploy"
