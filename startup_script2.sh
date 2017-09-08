@@ -2,7 +2,6 @@
 
 cd ~
 
-
 echo user: `whoami`
 echo path: `pwd`
 
@@ -33,7 +32,7 @@ echo "End install MongoDB"
 
 
 echo "Start deploy"
-sudo -u appuser git clone https://github.com/Artemmkin/reddit.git
+git clone https://github.com/Artemmkin/reddit.git
 cd reddit/
 bundle install
 puma -d
