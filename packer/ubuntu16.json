@@ -1,12 +1,17 @@
 {
+   "variables": {
+       "project_id": null,
+       "source_image": null,
+       "machine_type": null
+   },
    "builders": [ {
        "type": "googlecompute",
-       "project_id": "practice-devops-gcp-1",
-       "image_name": "reddit-base-{{timestamp}}",
-       "source_image": "ubuntu-1604-xenial-v20170815a",
+       "project_id": "{{user `project_id`}}",
+       "image_name": "reddit-base-2-{{timestamp}}",
+       "source_image": "{{user `source_image`}}",
        "zone": "europe-west1-b",
        "ssh_username": "appuser",
-       "machine_type": "f1-micro"
+       "machine_type": "{{user `machine_type`}}"
        }
     ],
     "provisioners": [ {
