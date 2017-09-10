@@ -16,7 +16,7 @@
        "disk_size": "15",
        "disk_type": "pd-standard",
        "network": "default",
-       "tags": ["puma-server", "http-server", "https-server"]
+       "tags": ["puma-server"]
        }
     ],
     "provisioners": [ {
