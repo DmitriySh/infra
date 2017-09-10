@@ -24,5 +24,5 @@ gcloud compute instances create --boot-disk-size=10GB --image=ubuntu-1604-xenial
 Use command to build `reddit-app` instance in GCE:
 - use a custom image with installed software
 ```bash 
-gcloud compute instances create --boot-disk-size=10GB --image=reddit-base-1505047437 --image-project=practice-devops-gcp-1 --machine-type=g1-small --tags puma-server --restart-on-failure --zone=europe-west1-b reddit-app
+gcloud compute instances create --image=reddit-base-3-1505069640 --image-project=practice-devops-gcp-1 --machine-type=g1-small --restart-on-failure --zone=europe-west1-b reddit-app
 ```
