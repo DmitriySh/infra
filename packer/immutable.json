@@ -16,7 +16,6 @@
        "disk_size": "10",
        "disk_type": "pd-standard",
        "network": "default",
-       "startup_script_file": "./scripts/startup_script2_1.sh",
        "tags": ["puma-server"]
        }
     ],
@@ -28,6 +27,11 @@
         "type": "shell",
         "script": "scripts/install_mongodb.sh",
         "execute_command": "sudo {{.Path}}"
+       }, 
+       {
+        "type": "shell",
+        "script": "scripts/install_reddit.sh",
+        "execute_command": "sudo -u appuser bash {{.Path}}"
        }
     ]
 }
