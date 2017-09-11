@@ -29,9 +29,17 @@
         "execute_command": "sudo {{.Path}}"
        }, 
        {
-        "type": "shell",
-        "script": "scripts/install_reddit.sh",
-        "execute_command": "sudo -u appuser bash {{.Path}}"
+         "type": "shell",
+         "script": "scripts/install_reddit.sh",
+         "execute_command": "sudo -u appuser bash {{.Path}}"
+       }, 
+       {
+         "type": "shell",
+         "scripts": ["cp packer/files/puma.service /etc/systemd/system/puma.service",
+                     "systemctl enable puma.service", 
+                     "systemctl start puma.service"
+          ], 
+          "execude_command": "sudo {{ .Vars }} {{ .Path }}" 
        }
     ]
 }
