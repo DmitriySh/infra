@@ -1,0 +1,34 @@
+{
+   "variables": {
+       "project_id": null,
+       "source_image": null,
+       "machine_type": null
+   },
+   "builders": [ {
+       "type": "googlecompute",
+       "project_id": "{{user `project_id`}}",
+       "image_name": "reddit-base-2-{{timestamp}}",
+       "source_image": "{{user `source_image`}}",
+       "zone": "europe-west1-b",
+       "ssh_username": "appuser",
+       "machine_type": "{{user `machine_type`}}",
+       "image_description": "Homework 7; example of 'Packer' tool to build an image for GCE instances",
+       "disk_size": "10",
+       "disk_type": "pd-standard",
+       "network": "default",
+       "startup_script_file": "./scripts/startup_script2_1.sh",
+       "tags": ["puma-server"]
+       }
+    ],
+    "provisioners": [ {
+        "type": "shell",
+        "script": "scripts/install_ruby.sh"
+      },
+      {
+        "type": "shell",
+        "script": "scripts/install_mongodb.sh",
+        "execute_command": "sudo {{.Path}}"
+       }
+    ]
+}
+
