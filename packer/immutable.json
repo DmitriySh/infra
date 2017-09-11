@@ -35,11 +35,8 @@
        }, 
        {
          "type": "shell",
-         "scripts": ["cp packer/files/puma.service /etc/systemd/system/puma.service",
-                     "systemctl enable puma.service", 
-                     "systemctl start puma.service"
-          ], 
-          "execude_command": "sudo {{ .Vars }} {{ .Path }}" 
+         "script": "scripts/install_puma_service.sh",
+          "execute_command": "sudo {{.Path}}" 
        }
     ]
 }
