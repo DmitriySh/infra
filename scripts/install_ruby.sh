@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 
 # File install_ruby.sh
 echo "Start install Ruby"
