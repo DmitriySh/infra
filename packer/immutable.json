@@ -34,18 +34,18 @@
          "execute_command": "sudo -u appuser bash {{.Path}}"
        }, 
        {
-          "type": "shell",
-          "script": "packer/files/puma.service",
-          "remote_path": "home/appuser/puma.service" 
+          "type": "file",
+          "source": "packer/files/puma.service",
+          "destination": "/tmp/puma.service" 
        },
        {
           "type": "shell",
           "inline": [
-               "mv home/appuser/puma.service /etc/systemd/system/puma.service",
+               "mv /tmp/puma.service /etc/systemd/system/puma.service",
                "systemctl enable puma.service",
                "systemctl start puma.service"
            ],
-          "execute_command": "sudo {{ .Vars }} {{ .Path }}"
+          "execute_command": "sudo {{.Vars}} {{.Path}}"
        }
     ]
 }
