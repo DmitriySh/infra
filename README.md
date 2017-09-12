@@ -33,7 +33,9 @@ reddit-app
 ```
 
 2.2) Use command to build `reddit-app` instance in GCE:
-- use a custom bake-image with installed software
+- use HashiCorp Packer to build image with prepared installations
+- use a custom bake-image
+
 ```bash 
 # Create new bake-image
 packer build \
