@@ -37,5 +37,20 @@ reddit-app
 - use a custom bake-image
 
 ```bash 
-gcloud compute instances create --image=reddit-base-3-1505069640 --image-project=practice-devops-gcp-1 --machine-type=g1-small --restart-on-failure --zone=europe-west1-b reddit-app
+# Create new bake-image
+packer build \
+ -var 'machine_type=f1-micro' \
+ -var 'project_id=practice-devops-gcp-1' \
+ -var 'source_image=ubuntu-1604-xenial-v20170815a' \
+./packer/immutable.json
+
+# Use bake-image and create new instance
+gcloud compute instances create \
+ --image=reddit-base-2-1505095462 \
+ --image-project=practice-devops-gcp-1 \
+ --machine-type=g1-small \
+ --tags puma-server \
+ --restart-on-failure \
+ --zone=europe-west1-b \
+reddit-app
 ```
