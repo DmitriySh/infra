@@ -1,0 +1,52 @@
+{
+   "variables": {
+       "project_id": null,
+       "source_image": null,
+       "machine_type": null
+   },
+   "builders": [ {
+       "type": "googlecompute",
+       "project_id": "{{user `project_id`}}",
+       "image_name": "reddit-base-2-{{timestamp}}",
+       "source_image": "{{user `source_image`}}",
+       "zone": "europe-west1-b",
+       "ssh_username": "appuser",
+       "machine_type": "{{user `machine_type`}}",
+       "image_description": "Homework 7; example of 'Packer' tool to build an image for GCE instances",
+       "disk_size": "10",
+       "disk_type": "pd-standard",
+       "network": "default",
+       "tags": ["puma-server"]
+       }
+    ],
+    "provisioners": [ {
+        "type": "shell",
+        "script": "scripts/install_ruby.sh"
+      },
+      {
+        "type": "shell",
+        "script": "scripts/install_mongodb.sh",
+        "execute_command": "sudo {{.Path}}"
+       }, 
+       {
+         "type": "shell",
+         "script": "scripts/install_reddit.sh",
+         "execute_command": "sudo -u appuser bash {{.Path}}"
+       }, 
+       {
+          "type": "file",
+          "source": "packer/files/puma.service",
+          "destination": "/tmp/puma.service" 
+       },
+       {
+          "type": "shell",
+          "inline": [
+               "mv /tmp/puma.service /etc/systemd/system/puma.service",
+               "systemctl enable puma.service",
+               "systemctl start puma.service"
+           ],
+          "execute_command": "sudo {{.Vars}} {{.Path}}"
+       }
+    ]
+}
+

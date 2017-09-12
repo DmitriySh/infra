@@ -1,0 +1,20 @@
+[Unit]
+Description=Puma HTTP Server
+After=network.target mongod.service
+
+[Service]
+# Foreground process (do not use --daemon in ExecStart or config.rb)
+Type=simple
+
+# Preferably configure a non-privileged user
+User=appuser
+
+# The path to the puma application root
+WorkingDirectory=/home/appuser/reddit
+ExecStart=/home/appuser/.rvm/wrappers/default/puma -b tcp://0.0.0.0:9292
+ExecStop=/home/appuser/.rvm/wrappers/default/pumactl -S
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
