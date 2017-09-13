@@ -1,5 +1,5 @@
 provider "google" {
-  project = "steam-strategy-174408"
+  project = "infra-179717"
   region  = "europe-west1"
 }
 
