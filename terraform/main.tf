@@ -24,6 +24,19 @@ resource "google_compute_instance" "app" {
     metadata {
         sshKeys = "appuser:${file("~/.ssh/otus_devops_appuser.pub")}"
     }
+    connection {
+        type = "ssh"
+        user = "appuser"
+        agent = false
+        private_key = "${file("~/.ssh/otus_devops_appuser")}"
+    }
+    provisioner "file" {
+        source = "files/puma.service"
+        destination = "/tmp/puma.service"
+    }
+    provisioner "remote-exec" {
+        script = "files/deploy.sh"
+    }
 }
 
 resource "google_compute_firewall" "firewall_puma" {
