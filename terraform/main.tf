@@ -20,5 +20,8 @@ resource "google_compute_instance" "app" {
         # использовать ephemeral IP для доступа из Интернет
         access_config {}
     }
+    metadata {
+        sshKeys = "appuser:${file("~/.ssh/otus_devops_appuser.pub")}"
+    }
 }
 
