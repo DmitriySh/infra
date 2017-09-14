@@ -2,7 +2,7 @@ Infra
 =======
 
 
-DevOps course, GCP practice 6.
+DevOps course, practices with [Google Cloud Platform](https://cloud.google.com/).
 
 1.1) Project has scripts for manual setup:
  - install Ruby `install_ruby.sh`
@@ -33,7 +33,7 @@ reddit-app
 ```
 
 2.2) Use command `gcloud` to build `reddit-app` instance in GCE:
-- use HashiCorp Packer to build image with prepared installations
+- use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build image with prepared installations
 - use a custom bake-image
 
 ```bash 
@@ -57,7 +57,7 @@ reddit-app
 
 --- 
 
-3) Use HashiCorp Terraform to build `reddit-app` instance in GCE:
+3) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` instance in GCE:
  - use default image from GCE or after HashiCorp Packer
  
  ```bash  
