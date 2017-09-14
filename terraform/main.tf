@@ -1,6 +1,6 @@
 provider "google" {
-    project = "infra-179717"
-    region = "europe-west1"
+    project = "${var.project}"
+    region = "${var.region}"
 }
 
 resource "google_compute_instance" "app" {
@@ -11,7 +11,7 @@ resource "google_compute_instance" "app" {
     # определение загрузочного диска
     boot_disk {
         initialize_params {
-            image = "reddit-base-3-1505269146"
+            image = "${var.disk_image}"
         }
     }
     # определение сетевого интерфейса
@@ -22,13 +22,13 @@ resource "google_compute_instance" "app" {
         access_config {}
     }
     metadata {
-        sshKeys = "appuser:${file("~/.ssh/otus_devops_appuser.pub")}"
+        sshKeys = "appuser:${file(var.public_key_path)}"
     }
     connection {
         type = "ssh"
         user = "appuser"
         agent = false
-        private_key = "${file("~/.ssh/otus_devops_appuser")}"
+        private_key = "${file(var.private_key_path)}"
     }
     provisioner "file" {
         source = "files/puma.service"
