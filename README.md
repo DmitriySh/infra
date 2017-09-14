@@ -61,6 +61,7 @@ reddit-app
  - use default image from GCE or after HashiCorp Packer
  
  ```bash  
+terraform$ terraform init
 terraform$ terraform plan
 terraform$ terraform apply
 ```
