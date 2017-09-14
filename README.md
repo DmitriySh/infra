@@ -7,15 +7,15 @@ DevOps course, GCP practice 6.
 1.1) Project has scripts for manual setup:
  - install Ruby `install_ruby.sh`
  - install MongoDB `install_mongodb.sh`
- - deploy application 'reddit' from Artemmkin `deploy.sh`
+ - deploy application 'reddit' from Artemmkin `scripts/deploy.sh`
 
 1.2) Project has scripts to make automatic setup at the time startup new instance:
- - startup script `startup_script1.sh`
- - inner script `startup_script2.sh` with main tasks
+ - startup script `scripts/startup_script1_1.sh`
+ - inner script `scripts/startup_script1_2.sh` with main tasks
 
 --- 
 
-2.1) Use command to build `reddit-app` instance in GCE:
+2.1) Use `gcloud` command to build `reddit-app` instance in GCE:
  - use default image from GCE
  - use startup script to make prepare installations
 
@@ -32,7 +32,7 @@ gcloud compute instances create
 reddit-app
 ```
 
-2.2) Use command to build `reddit-app` instance in GCE:
+2.2) Use command `gcloud` to build `reddit-app` instance in GCE:
 - use HashiCorp Packer to build image with prepared installations
 - use a custom bake-image
 
@@ -54,3 +54,78 @@ gcloud compute instances create \
  --zone=europe-west1-b \
 reddit-app
 ```
+
+--- 
+
+3) Use HashiCorp Terraform to build `reddit-app` instance in GCE:
+ - use default image from GCE or after HashiCorp Packer
+ 
+ ```bash  
+provider "google" {
+  project = "${var.project}"
+  region  = "${var.region}"
+}
+
+resource "google_compute_instance" "app" {
+  name         = "reddit-app"
+  machine_type = "g1-small"
+  zone         = "europe-west1-b"
+  tags         = ["reddit-app"]
+
+  # определение загрузочного диска
+  boot_disk {
+    initialize_params {
+      image = "${var.disk_image}"
+    }
+  }
+
+  # определение сетевого интерфейса
+  network_interface {
+    # сеть, к которой присоединить данный интерфейс
+    network = "default"
+
+    # использовать ephemeral IP для доступа из Интернет
+    access_config {}
+  }
+
+  metadata {
+    sshKeys = "appuser:${file(var.public_key_path)}"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file(var.private_key_path)}"
+  }
+
+  provisioner "file" {
+    source      = "files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+
+  provisioner "remote-exec" {
+    script = "files/deploy.sh"
+  }
+}
+
+resource "google_compute_firewall" "firewall_puma" {
+  name = "allow-puma-default"
+
+  # Название сети, в которой действует правило
+  network = "default"
+
+  # Какой доступ разрешить
+  allow {
+    protocol = "tcp"
+    ports    = ["9292"]
+  }
+
+  # Каким адресам разрешаем доступ
+  source_ranges = ["0.0.0.0/0"]
+
+  # Правило применимо для инстансов с тегом
+  target_tags = ["reddit-app"]
+}
+```
+ 
