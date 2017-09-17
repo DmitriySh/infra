@@ -59,8 +59,15 @@ reddit-app
 
 3) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` instance in GCE:
  - use default image from GCE or after HashiCorp Packer
- 
- ```bash  
+ - use required file `variables.tf` with definition of all variables
+ - internal file `terraform.tfvars` with custom values for all variables without default
+```text  
+project = "infra-179717"
+public_key_path = "~/.ssh/otus_devops_appuser.pub"
+private_key_path = "~/.ssh/otus_devops_appuser"
+disk_image = "reddit-base-2-1505095462"
+``` 
+```text  
 terraform$ terraform init
 terraform$ terraform plan
 terraform$ terraform apply
