@@ -7,3 +7,12 @@ variable app_disk_image {
   default     = "reddit-app-base"
 }
 
+variable source_ranges {
+  description = "Allowed IP addresses"
+  default     = ["0.0.0.0/0"]
+}
+
+variable access_port {
+  description = "Port with legal access"
+  default     = "9292"
+}
