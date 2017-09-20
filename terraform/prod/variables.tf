@@ -28,3 +28,8 @@ variable db_disk_image {
 variable disk_image {
   description = "Disk image for reddit app"
 }
+
+variable source_ranges {
+  description = "Allowed IP addresses"
+  default     = ["62.117.123.194/32"]
+}
