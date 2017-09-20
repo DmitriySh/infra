@@ -37,14 +37,12 @@ reddit-app
 - use a custom bake-image
 
 ```bash 
-# Create new bake-image
 $ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=practice-devops-gcp-1' \
  -var 'source_image=ubuntu-1604-xenial-v20170815a' \
 ./packer/immutable.json
 
-# Use bake-image and create new instance
 $ gcloud compute instances create \
  --image=reddit-base-2-1505095462 \
  --image-project=practice-devops-gcp-1 \
@@ -57,43 +55,25 @@ reddit-app
 
 --- 
 
-3.1) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` instance in GCE:
- - use default image from GCE or after [HashiCorp Packer](https://www.packer.io/intro/index.html)
- - use required file `variables.tf` with definition of all variables
- - internal file `terraform.tfvars` with custom values for all variables without default
-```text  
-project = "infra-179717"
-public_key_path = "~/.ssh/otus_devops_appuser.pub"
-private_key_path = "~/.ssh/otus_devops_appuser"
-disk_image = "reddit-base-2-1505095462"
-``` 
-```text  
-terraform$ terraform init
-terraform$ terraform plan
-terraform$ terraform apply
-```
- 
-
-
-3.2) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` and `reddit-db` instances in GCE:
+3.1) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` and `reddit-db` instances in GCE:
  - use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build images with prepared installation
 
-```text  
+```bash  
 packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=infra-179717' \
  -var 'source_image=ubuntu-1604-xenial-v20170815a' \
 ./packer/db.json
 
-packer build \
+~$ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=infra-179717' \
  -var 'source_image=ubuntu-1604-xenial-v20170815a' \ 
 ./packer/app.json
 ``` 
  - use required file `variables.tf` for _each module_ and _each environment_ with definition of needed variables
- - do not forget to create an internal file `terraform.tfvars` with values in runtime
-```text
+ - create an internal file `terraform.tfvars` with custom values of variables
+```bash
 project = "infra-179717"
 public_key_path = "~/.ssh/otus_devops_appuser.pub"
 private_key_path = "~/.ssh/otus_devops_appuser"
@@ -101,15 +81,44 @@ db_disk_image = "reddit-db-1505646807"
 app_disk_image = "reddit-app-1505646464"
 disk_image = "reddit-base-3-1505269146"
 ``` 
-```text  
-terraform/prod$ terraform init
-terraform/prod$ terraform plan
-terraform/prod$ terraform apply
-terraform/prod$ terraform destroy
-
-terraform/stage$ terraform init
-terraform/stage$ terraform plan
-terraform/stage$ terraform apply
-terraform/stage$ terraform destroy
+ - build instances
+```bash  
+~/terraform/{prod | stage}$ terraform init
+~/terraform/{prod | stage}$ terraform plan
+~/terraform/{prod | stage}$ terraform apply
+~/terraform/{prod | stage}$ terraform destroy
 ```
  
+3.2) Use [Google Cloud Storage](https://cloud.google.com/storage/) to store a `terraform` state file
+ - create file `backend.tf` next to `main.tf`
+```bash
+terraform {
+  backend "gcs" {
+    bucket  = "infra-179717-bucket"
+    path    = "infra/terraform.tfstate"
+    project = "infra-179717"
+    region  = "europe-west1"
+  }
+}
+``` 
+ - create storage bucket
+```bash  
+~$ gsutil mb -c regional -l europe-west1 -p infra-179717 gs://infra-179717-bucket
+Creating gs://infra-179717-bucket/...
+
+~$ gsutil ls
+gs://infra-179717-bucket/
+```
+ - build instances
+```bash  
+~/terraform/{prod | stage}$ terraform init
+~/terraform/{prod | stage}$ terraform plan
+~/terraform/{prod | stage}$ terraform apply
+~/terraform/{prod | stage}$ terraform destroy
+
+~$ gsutil rm -r gs://infra-179717-bucket/
+Removing gs://infra-179717-bucket/infra/terraform.tfstate#1505901677420946...
+/ [1 objects]
+Operation completed over 1 objects.
+Removing gs://infra-179717-bucket/...
+```
