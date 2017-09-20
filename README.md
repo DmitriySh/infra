@@ -86,7 +86,6 @@ disk_image = "reddit-base-3-1505269146"
 ~/terraform/{prod | stage}$ terraform init
 ~/terraform/{prod | stage}$ terraform plan
 ~/terraform/{prod | stage}$ terraform apply
-~/terraform/{prod | stage}$ terraform destroy
 ```
  
 3.2) Use [Google Cloud Storage](https://cloud.google.com/storage/) to store a `terraform` state file
@@ -114,6 +113,12 @@ gs://infra-179717-bucket/
 ~/terraform/{prod | stage}$ terraform init
 ~/terraform/{prod | stage}$ terraform plan
 ~/terraform/{prod | stage}$ terraform apply
+```
+
+---
+
+Do not forget delete resources
+```bash  
 ~/terraform/{prod | stage}$ terraform destroy
 
 ~$ gsutil rm -r gs://infra-179717-bucket/
