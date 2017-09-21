@@ -14,6 +14,7 @@ DevOps course, practices with [Google Cloud Platform](https://cloud.google.com/)
  - inner script `scripts/startup_script1_2.sh` with main tasks
 
 --- 
+**Homework 6, 7**
 
 2.1) Use `gcloud` command to build `reddit-app` instance in GCE:
  - use default image from GCE
@@ -54,12 +55,13 @@ reddit-app
 ```
 
 --- 
+**Homework 8, 9**
 
 3.1) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` and `reddit-db` instances in GCE:
  - use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build images with prepared installation
 
 ```bash  
-packer build \
+~$ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=infra-179717' \
  -var 'source_image=ubuntu-1604-xenial-v20170815a' \
@@ -127,3 +129,45 @@ Removing gs://infra-179717-bucket/infra/terraform.tfstate#1505901677420946...
 Operation completed over 1 objects.
 Removing gs://infra-179717-bucket/...
 ```
+
+--- 
+**Homework 10**
+
+4) Use [HashiCorp Packer](https://www.packer.io/intro/index.html) and [Red Hat Ansible](https://www.ansible.com) to build `reddit-app` and `reddit-db` images in GCE:
+ - check `firewall-rules`:
+```bash  
+~$ gcloud compute firewall-rules list
+NAME                    NETWORK  DIRECTION  PRIORITY  ALLOW                         DENY
+default-allow-icmp      default  INGRESS    65534     icmp
+default-allow-rdp       default  INGRESS    65534     tcp:3389
+default-allow-ssh       default  INGRESS    65534     tcp:22
+``` 
+ - use `Packer` templates with `Ansible` playbooks (instead of bash scripts) to build images with prepared installations
+ ```bash 
+~$packer build \ 
+  -var 'machine_type=f1-micro' \
+  -var 'project_id=infra-179717' \
+  -var 'source_image=ubuntu-1604-xenial-v20170919' \
+./packer/db.json
+
+~$packer build \
+  -var 'machine_type=f1-micro' \
+  -var 'project_id=infra-179717' \
+  -var 'source_image=ubuntu-1604-xenial-v20170919' \
+./packer/app.json
+ ```
+ 
+ - example of provisioners for `Packer` templates:
+ ```bash 
+    "provisioners": [ {
+        "type": "ansible",
+        "playbook_file": "ansible/reddit_app.yml"
+      }
+    ]
+    ...
+    "provisioners": [ {
+        "type": "ansible",
+        "playbook_file": "ansible/reddit_db.yml"
+       }
+    ]
+ ``` 
