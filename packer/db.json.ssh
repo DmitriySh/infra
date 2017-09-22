@@ -21,8 +21,9 @@
     ],
     "provisioners": [ 
        {
-        "type": "ansible",
-        "playbook_file": "ansible/reddit_db.yml"
+        "type": "shell",
+        "script": "scripts/install_mongodb.sh",
+        "execute_command": "sudo {{.Path}}"
        }
     ]
 }

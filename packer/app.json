@@ -20,8 +20,8 @@
        }
     ],
     "provisioners": [ {
-        "type": "shell",
-        "script": "scripts/install_ruby.sh"
+        "type": "ansible",
+        "playbook_file": "ansible/reddit_app.yml"
       }
     ]
 }

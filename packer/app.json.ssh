@@ -7,23 +7,22 @@
    "builders": [ {
        "type": "googlecompute",
        "project_id": "{{user `project_id`}}",
-       "image_name": "reddit-db-{{timestamp}}",
+       "image_name": "reddit-app-{{timestamp}}",
        "source_image": "{{user `source_image`}}",
        "zone": "europe-west1-b",
        "ssh_username": "appuser",
        "machine_type": "{{user `machine_type`}}",
-       "image_description": "Homework 9 by Packer; image has MongoDB",
+       "image_description": "Homework 9 by Packer; image has Ruby",
        "disk_size": "15",
        "disk_type": "pd-standard",
        "network": "default",
        "tags": ["puma-server"]
        }
     ],
-    "provisioners": [ 
-       {
-        "type": "ansible",
-        "playbook_file": "ansible/reddit_db.yml"
-       }
+    "provisioners": [ {
+        "type": "shell",
+        "script": "scripts/install_ruby.sh"
+      }
     ]
 }
 
