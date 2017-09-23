@@ -134,14 +134,25 @@ Removing gs://infra-179717-bucket/...
 **Homework 10**
 
 4) Use [HashiCorp Packer](https://www.packer.io/intro/index.html) and [Red Hat Ansible](https://www.ansible.com) to build `reddit-app` and `reddit-db` images in GCE:
+ - install `Ansible` and required dependencies
+```bash   
+~$ pip install -r ./ansible/requirements.txt
+~$ ansible --version
+ansible 2.3.2.0
+``` 
  - check `firewall-rules`:
 ```bash  
 ~$ gcloud compute firewall-rules list
 NAME                    NETWORK  DIRECTION  PRIORITY  ALLOW                         DENY
 default-allow-icmp      default  INGRESS    65534     icmp
+default-allow-internal  default  INGRESS    65534     tcp:0-65535,udp:0-65535,icmp
 default-allow-rdp       default  INGRESS    65534     tcp:3389
 default-allow-ssh       default  INGRESS    65534     tcp:22
 ``` 
+ - create `default-allow-ssh` if you do not have this one
+ ```ssh  
+ ~$ gcloud compute firewall-rules create default-allow-ssh --allow tcp:22 --priority=65534 --description="Allow SSH connections" --direction=INGRESS
+ ``` 
  - use `Packer` templates with `Ansible` playbooks (instead of bash scripts) to build images with prepared installations
  ```bash 
 ~$packer build \ 
@@ -156,18 +167,5 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
   -var 'source_image=ubuntu-1604-xenial-v20170919' \
 ./packer/app.json
  ```
- 
- - example of provisioners for `Packer` templates:
- ```bash 
-    "provisioners": [ {
-        "type": "ansible",
-        "playbook_file": "ansible/reddit_app.yml"
-      }
-    ]
-    ...
-    "provisioners": [ {
-        "type": "ansible",
-        "playbook_file": "ansible/reddit_db.yml"
-       }
-    ]
+
  ``` 
