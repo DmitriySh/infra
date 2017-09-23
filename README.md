@@ -151,7 +151,10 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
 ``` 
  - create `default-allow-ssh` if you do not have this one
  ```ssh  
- ~$ gcloud compute firewall-rules create default-allow-ssh --allow tcp:22 --priority=65534 --description="Allow SSH connections" --direction=INGRESS
+ ~$ gcloud compute firewall-rules create default-allow-ssh \ 
+  --allow tcp:22 --priority=65534 \ 
+  --description="Allow SSH connections" \ 
+  --direction=INGRESS
  ``` 
  - use `Packer` templates with `Ansible` playbooks (instead of bash scripts) to build images with prepared installations
  ```bash 
