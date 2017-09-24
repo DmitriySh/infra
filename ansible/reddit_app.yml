@@ -11,4 +11,11 @@
           dest: /etc/mongod.conf
           mode: 0644
        tags: db-tagg 
+       notify: restart mongod
+
+
+  handlers:
+     - name: restart mongod
+       become: true
+       service: name=mongod state=restarted
 
