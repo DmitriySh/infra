@@ -13,9 +13,25 @@
        tags: db-tagg 
        notify: restart mongod
 
+     - name: Add unit file for Puma
+       become: true
+       copy:
+          src: files/puma.service
+          dest: /etc/systemd/system/puma.service
+       tags: app-tag
+       notify: reload puma
+
+     - name: enable puma
+       become: true
+       systemd: name=puma enabled=yes
+       tags: app-tag
 
   handlers:
      - name: restart mongod
        become: true
        service: name=mongod state=restarted
+ 
+     - name: reload puma
+       become: true
+       systemd: name=puma state=reloaded
 
