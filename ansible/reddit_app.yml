@@ -1,10 +1,11 @@
 ---
-- name: Configure hosts & deploy application
+- name: configure hosts & deploy application
   hosts: all
   vars:
     mongo_bind_ip: 0.0.0.0
+    db_host: 10.132.0.2
   tasks:
-     - name: Change mongo config file
+     - name: change mongo config file
        become: true
        template:
           src: templates/mongod.conf.j2
@@ -13,13 +14,19 @@
        tags: db-tagg 
        notify: restart mongod
 
-     - name: Add unit file for Puma
+     - name: add unit file for Puma
        become: true
        copy:
           src: files/puma.service
           dest: /etc/systemd/system/puma.service
        tags: app-tag
        notify: reload puma
+
+     - name: add config for DB connection
+       template:
+          src: templates/db_config.j2
+          dest: /home/appuser/db_config
+       tags: app-tag
 
      - name: enable puma
        become: true
