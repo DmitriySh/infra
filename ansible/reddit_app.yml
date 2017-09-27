@@ -1,20 +1,62 @@
-# Setup and configure ruby things for reddit app
-- name: "Reddit App: Configure app environment"
+---
+- name: configure hosts & deploy application
   hosts: all
-  gather_facts: no
-  become: yes
-
+  vars:
+    mongo_bind_ip: 0.0.0.0
+    db_host: 10.132.0.2
   tasks:
-  - name: Install ruby and rubygems and required packages
-    apt: "name={{ item }} state=present"
-    with_items:
-      - ruby-full
-      - ruby-dev
-      - build-essential
+     - name: change mongo config file
+       become: true
+       template:
+          src: templates/mongod.conf.j2
+          dest: /etc/mongod.conf
+          mode: 0644
+       tags: db-tagg 
+       notify: restart mongod
 
-  - name: Install Ruby bundler
-    gem:
-      name: bundler
-      state: present
-      user_install: no
+     - name: add unit file for Puma
+       become: true
+       copy:
+          src: files/puma.service
+          dest: /etc/systemd/system/puma.service
+       tags: app-tag
+       notify: reload puma
+
+     - name: add config for DB connection
+       template:
+          src: templates/db_config.j2
+          dest: /home/appuser/db_config
+       tags: app-tag
+
+     - name: enable puma
+       become: true
+       systemd: name=puma enabled=yes
+       tags: app-tag
+
+     - name: fetch the latest version of application code
+       git:
+          repo: 'https://github.com/Artemmkin/reddit.git'
+          dest: /home/appuser/reddit
+          version: monolith
+       tags: deploy-tag
+       notify: restart puma
+
+     - name: bundle install
+       bundler:
+          state: present
+          chdir: /home/appuser/reddit
+       tags: deploy-tag
+
+  handlers:
+     - name: restart mongod
+       become: true
+       service: name=mongod state=restarted
+ 
+     - name: reload puma
+       become: true
+       systemd: name=puma state=reloaded
+
+     - name: restart puma
+       become: true
+       systemd: name=puma state=restarted
 
