@@ -202,9 +202,11 @@ appserver | SUCCESS => {
 }
 ``` 
 
- - apply [Red Hat Ansible](https://www.ansible.com) playbook
+ - apply [Red Hat Ansible](https://www.ansible.com) playbooks
 ```ssh 
-$ ansible-playbook reddit_app.yml --limit app --tags deploy-tag
+~$ ansible-playbook reddit_app_db.yml --limit db --tags db-tag
+~$ ansible-playbook reddit_app_db.yml --limit app --tags app-tag
+~$ ansible-playbook reddit_app_db.yml --limit app --tags deploy-tag
 ...
  TASK [Fetch the latest version of application code]
  **************************************************
