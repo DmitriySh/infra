@@ -173,7 +173,7 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
 --- 
 **Homework 11**
 
-5) Configure `reddit-app` and `reddit-db` images in GCE
+5) Configure `reddit-app` and `reddit-db` instances in GCE
  - make an inventory file for with custom IP's
 ```ssh  
 $ cat hosts
