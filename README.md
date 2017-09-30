@@ -173,7 +173,7 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
 --- 
 **Homework 11**
 
-5) Configure `reddit-app` and `reddit-db` images in GCE
+5) Configure `reddit-app` and `reddit-db` instances in GCE
  - make an inventory file for with custom IP's
 ```ssh  
 $ cat hosts
@@ -202,9 +202,11 @@ appserver | SUCCESS => {
 }
 ``` 
 
- - apply [Red Hat Ansible](https://www.ansible.com) playbook
+ - apply [Red Hat Ansible](https://www.ansible.com) playbooks
 ```ssh 
-$ ansible-playbook reddit_app.yml --limit app --tags deploy-tag
+~$ ansible-playbook reddit_app_db.yml --limit db --tags db-tag
+~$ ansible-playbook reddit_app_db.yml --limit app --tags app-tag
+~$ ansible-playbook reddit_app_db.yml --limit app --tags deploy-tag
 ...
  TASK [Fetch the latest version of application code]
  **************************************************
