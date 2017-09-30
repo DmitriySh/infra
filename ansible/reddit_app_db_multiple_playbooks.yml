@@ -15,7 +15,6 @@
 
   handlers:
     - name: restart mongod
-      become: true
       service: name=mongod state=restarted
 
 - name: Configure reddit app

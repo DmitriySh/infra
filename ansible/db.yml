@@ -1,0 +1,18 @@
+---
+- name: Configure MongoDB
+  hosts: db
+  become: true
+  vars:
+      mongo_bind_ip: 0.0.0.0
+  tasks:
+    - name: change mongo config file
+      template:
+         src: templates/mongod.conf.j2
+         dest: /etc/mongod.conf
+         mode: 0644
+      notify: restart mongod
+
+  handlers:
+    - name: restart mongod
+      service: name=mongod state=restarted
+
