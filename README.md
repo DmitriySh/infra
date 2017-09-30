@@ -168,8 +168,6 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
   -var 'project_id=infra-179717' \
   -var 'source_image=ubuntu-1604-xenial-v20170919' \
 ./packer/app.json
- ```
-
  ``` 
 
 --- 
