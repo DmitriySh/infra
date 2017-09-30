@@ -3,22 +3,7 @@
   become: true
   vars:
       db_host: 10.132.0.2
-  tasks:
-    - name: add unit file for Puma
-      copy:
-        src: files/puma.service
-        dest: /etc/systemd/system/puma.service
-      notify: reload puma
-    - name: add config for DB connection
-      template:
-        src: templates/db_config.j2
-        dest: /home/appuser/db_config
-        owner: appuser
-        group: appuser
-    - name: enable puma
-      systemd: name=puma enabled=yes
 
-  handlers:
-    - name: reload puma
-      systemd: name=puma state=reloaded
+  roles:
+    - app
 
