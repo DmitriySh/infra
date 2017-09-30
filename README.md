@@ -202,4 +202,20 @@ appserver | SUCCESS => {
 }
 ``` 
 
- - define [Red Hat Ansible](https://www.ansible.com) playbook
+ - apply [Red Hat Ansible](https://www.ansible.com) playbook
+```ssh 
+$ ansible-playbook reddit_app.yml --limit app --tags deploy-tag
+...
+ TASK [Fetch the latest version of application code]
+ **************************************************
+ changed: [appserver]
+ TASK [bundle install]
+ ********************************************************************************
+ changed: [appserver]
+ RUNNING HANDLER [restart puma]
+ ***********************************************************************
+ changed: [appserver]
+ PLAY RECAP
+******************************************************************************************
+ appserver                  : ok=4    changed=3    u
+``` 
