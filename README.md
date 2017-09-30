@@ -204,5 +204,4 @@ appserver | SUCCESS => {
 }
 ``` 
 
- - 
-```define [Red Hat Ansible](https://www.ansible.com) playbook
+ - define [Red Hat Ansible](https://www.ansible.com) playbook
