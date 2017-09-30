@@ -117,7 +117,6 @@ gs://infra-179717-bucket/
 ~/terraform/{prod | stage}$ terraform apply
 ```
 
----
 
 Do not forget delete resources
 ```bash  
@@ -172,3 +171,38 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
  ```
 
  ``` 
+
+--- 
+**Homework 11**
+
+5) Configure `reddit-app` and `reddit-db` images in GCE
+ - make an inventory file for with custom IP's
+```ssh  
+$ cat hosts
+[app]
+appserver ansible_ssh_host=35.195.190.123
+[db]
+dbserver ansible_ssh_host=35.189.224.149
+``` 
+ - make [Red Hat Ansible](https://www.ansible.com) common config file
+```ssh 
+~$ cat ansible.cfg
+[defaults]
+inventory = hosts
+remote_user = appuser
+private_key_file = ~/.ssh/appuser
+host_key_checking = False
+
+~$ ansible all -m ping
+dbserver | SUCCESS => {
+"changed": false,
+"ping": "pong"
+}
+appserver | SUCCESS => {
+"changed": false,
+"ping": "pong"
+}
+``` 
+
+ - 
+```define [Red Hat Ansible](https://www.ansible.com) playbook
