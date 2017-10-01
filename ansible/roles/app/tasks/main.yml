@@ -5,6 +5,7 @@
     src: puma.service
     dest: /etc/systemd/system/puma.service
   notify: reload puma
+
 - name: add config for DB connection
   template:
     src: db_config.j2
@@ -13,4 +14,8 @@
     group: appuser
 - name: enable puma
   systemd: name=puma enabled=yes
+
+- name: show info about the env this host belongs to
+  debug:
+    msg: "This host is in {{ env }} environment!!!"
 

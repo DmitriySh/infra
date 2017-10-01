@@ -2,8 +2,12 @@
 # tasks file for db
 - name: change mongo config file
   template:
-     src: mongod.conf.j2
-     dest: /etc/mongod.conf
-     mode: 0644
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+    mode: 0644
   notify: restart mongod
+
+- name: show info about the env this host belongs to
+  debug:
+    msg: "This host is in {{ env }} environment!!!"
 
