@@ -31,5 +31,5 @@ variable disk_image {
 
 variable source_ranges {
   description = "Allowed IP addresses"
-  default     = ["62.117.123.194/32"]
+  default     = ["46.138.143.35/32"]
 }
