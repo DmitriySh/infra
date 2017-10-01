@@ -14,9 +14,9 @@ DevOps course, practices with [Google Cloud Platform](https://cloud.google.com/)
  - inner script `scripts/startup_script1_2.sh` with main tasks
 
 --- 
-**Homework 6, 7**
+## Homework 6, 7
 
-2.1) Use `gcloud` command to build `reddit-app` instance in GCE:
+1.1) Use `gcloud` command to build `reddit-app` instance in GCE:
  - use default image from GCE
  - use startup script to make prepare installations
 
@@ -33,7 +33,7 @@ $ gcloud compute instances create
 reddit-app
 ```
 
-2.2) Use command `gcloud` to build `reddit-app` instance in GCE:
+1.2) Use command `gcloud` to build `reddit-app` instance in GCE:
 - use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build image with prepared installations
 - use a custom bake-image
 
@@ -55,9 +55,9 @@ reddit-app
 ```
 
 --- 
-**Homework 8, 9**
+## Homework 8, 9
 
-3.1) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` and `reddit-db` instances in GCE:
+1.1) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` and `reddit-db` instances in GCE:
  - use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build images with prepared installation
 
 ```bash  
@@ -90,7 +90,7 @@ disk_image = "reddit-base-3-1505269146"
 ~/terraform/{prod | stage}$ terraform apply
 ```
  
-3.2) Use [Google Cloud Storage](https://cloud.google.com/storage/) to store a `terraform` state file
+1.2) Use [Google Cloud Storage](https://cloud.google.com/storage/) to store a `terraform` state file
  - create file `backend.tf` next to `main.tf`
 ```bash
 terraform {
@@ -130,9 +130,9 @@ Removing gs://infra-179717-bucket/...
 ```
 
 --- 
-**Homework 10**
+## Homework 10
 
-4) Use [HashiCorp Packer](https://www.packer.io/intro/index.html) and [Red Hat Ansible](https://www.ansible.com) to build `reddit-app` and `reddit-db` images in GCE:
+Use [HashiCorp Packer](https://www.packer.io/intro/index.html) and [Red Hat Ansible](https://www.ansible.com) to build `reddit-app` and `reddit-db` images in GCE:
  - install `Ansible` and required dependencies
 ```bash   
 ~$ pip install -r ./ansible/requirements.txt
@@ -171,9 +171,9 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
  ``` 
 
 --- 
-**Homework 11**
+## Homework 11, 12
 
-5) Configure `reddit-app` and `reddit-db` instances in GCE
+1.1) Configure `reddit-app` and `reddit-db` instances in GCE
  - make an inventory file for with custom IP's
 ```ssh  
 $ cat hosts
@@ -202,22 +202,26 @@ appserver | SUCCESS => {
 }
 ``` 
 
- - apply [Red Hat Ansible](https://www.ansible.com) playbooks
+1.2) Apply [Red Hat Ansible](https://www.ansible.com) playbooks
+ - use 1 file and 1 playbook; need to choose host (app | db) and concreate tag (db-tag | app-tag | deploy-tag)
 ```ssh 
-~$ ansible-playbook reddit_app_db.yml --limit db --tags db-tag
-~$ ansible-playbook reddit_app_db.yml --limit app --tags app-tag
-~$ ansible-playbook reddit_app_db.yml --limit app --tags deploy-tag
-...
- TASK [Fetch the latest version of application code]
- **************************************************
- changed: [appserver]
- TASK [bundle install]
- ********************************************************************************
- changed: [appserver]
- RUNNING HANDLER [restart puma]
- ***********************************************************************
- changed: [appserver]
- PLAY RECAP
-******************************************************************************************
- appserver                  : ok=4    changed=3    u
+~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit db --tags db-tag
+~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags app-tag
+~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags deploy-tag
+``` 
+
+ - or use 1 file and multiple playbooks; need to choose concreate tag (db-tag | app-tag | deploy-tag)
+```ssh 
+~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag --check
+~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag
+~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags app-tag --check
+~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags app-tag
+~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags deploy-tag --check
+~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags deploy-tag
+```
+
+ - or use multiple files and multiple playbooks; nothing to choose, invoke one file only with ansible roles and environments
+```ssh 
+ansible-playbook site.yml --check
+ansible-playbook site.yml
 ``` 
