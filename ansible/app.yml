@@ -1,0 +1,7 @@
+- name: Configure reddit app
+  hosts: app
+  become: true
+
+  roles:
+    - app
+
