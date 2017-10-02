@@ -8,3 +8,9 @@
 *.tfvars
 .terraform/
 *.retry
+
+# Intellij
+.idea/
+*.iml
+*.iws
+*.ipr
