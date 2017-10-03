@@ -26,7 +26,7 @@ $ gcloud compute instances create
  --image-project=ubuntu-os-cloud \
  --machine-type=g1-small \
  --tags puma-server \
- --restart-on-failure 
+ --restart-on-failure
  --zone=europe-west1-b \
  --metadata-from-file startup-script=./startup_script1_1.sh
 reddit-app
@@ -99,7 +99,7 @@ terraform {
     region  = "europe-west1"
   }
 }
-``` 
+```
  - create storage bucket
 ```bash
 ~$ gsutil mb -c regional -l europe-west1 -p infra-179717 gs://infra-179717-bucket
