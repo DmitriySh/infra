@@ -1,32 +1,37 @@
 {
-   "variables": {
-       "project_id": null,
-       "source_image": null,
-       "machine_type": null
-   },
-   "builders": [ {
-       "type": "googlecompute",
-       "project_id": "{{user `project_id`}}",
-       "image_name": "reddit-base-{{timestamp}}",
-       "source_image": "{{user `source_image`}}",
-       "zone": "europe-west1-b",
-       "ssh_username": "appuser",
-       "machine_type": "{{user `machine_type`}}",
-       "image_description": "Homework 7 by Packer; image has Ruby and MongoDB",
-       "disk_size": "15",
-       "disk_type": "pd-standard",
-       "network": "default",
-       "tags": ["puma-server"]
-       }
-    ],
-    "provisioners": [ {
-        "type": "shell",
-        "script": "scripts/install_ruby.sh"
-      }, {
-        "type": "shell",
-        "script": "scripts/install_mongodb.sh",
-        "execute_command": "sudo {{.Path}}"
-       }
-    ]
+  "variables": {
+    "project_id": null,
+    "source_image": null,
+    "machine_type": null
+  },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "project_id": "{{user `project_id`}}",
+      "image_name": "reddit-base-{{timestamp}}",
+      "source_image": "{{user `source_image`}}",
+      "zone": "europe-west1-b",
+      "ssh_username": "appuser",
+      "machine_type": "{{user `machine_type`}}",
+      "image_description": "Homework 7 by Packer; image has Ruby and MongoDB",
+      "disk_size": "15",
+      "disk_type": "pd-standard",
+      "network": "default",
+      "tags": [
+        "puma-server"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "scripts/install_ruby.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install_mongodb.sh",
+      "execute_command": "sudo {{.Path}}"
+    }
+  ]
 }
 
