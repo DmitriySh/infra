@@ -13,15 +13,14 @@ DevOps course, practices with [Google Cloud Platform](https://cloud.google.com/)
  - startup script `scripts/startup_script1_1.sh`
  - inner script `scripts/startup_script1_2.sh` with main tasks
 
---- 
 ## Homework 6, 7
 
 1.1) Use `gcloud` command to build `reddit-app` instance in GCE:
  - use default image from GCE
  - use startup script to make prepare installations
 
-```bash 
-$ gcloud compute instances create 
+```bash
+$ gcloud compute instances create
  --boot-disk-size=10GB \
  --image=ubuntu-1604-xenial-v20170815a \
  --image-project=ubuntu-os-cloud \
@@ -29,7 +28,7 @@ $ gcloud compute instances create
  --tags puma-server \
  --restart-on-failure 
  --zone=europe-west1-b \
- --metadata-from-file startup-script=./startup_script1_1.sh 
+ --metadata-from-file startup-script=./startup_script1_1.sh
 reddit-app
 ```
 
@@ -37,7 +36,7 @@ reddit-app
 - use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build image with prepared installations
 - use a custom bake-image
 
-```bash 
+```bash
 $ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=practice-devops-gcp-1' \
@@ -54,13 +53,12 @@ $ gcloud compute instances create \
 reddit-app
 ```
 
---- 
 ## Homework 8, 9
 
 1.1) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` and `reddit-db` instances in GCE:
  - use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build images with prepared installation
 
-```bash  
+```bash
 ~$ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=infra-179717' \
@@ -70,9 +68,9 @@ reddit-app
 ~$ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=infra-179717' \
- -var 'source_image=ubuntu-1604-xenial-v20170815a' \ 
+ -var 'source_image=ubuntu-1604-xenial-v20170815a' \
 ./packer/app.json
-``` 
+```
  - use required file `variables.tf` for _each module_ and _each environment_ with definition of needed variables
  - create an internal file `terraform.tfvars` with custom values of variables
 ```bash
@@ -82,14 +80,14 @@ private_key_path = "~/.ssh/otus_devops_appuser"
 db_disk_image = "reddit-db-1505646807"
 app_disk_image = "reddit-app-1505646464"
 disk_image = "reddit-base-3-1505269146"
-``` 
+```
  - build instances
-```bash  
+```bash
 ~/terraform/{prod | stage}$ terraform init
 ~/terraform/{prod | stage}$ terraform plan
 ~/terraform/{prod | stage}$ terraform apply
 ```
- 
+
 1.2) Use [Google Cloud Storage](https://cloud.google.com/storage/) to store a `terraform` state file
  - create file `backend.tf` next to `main.tf`
 ```bash
@@ -103,7 +101,7 @@ terraform {
 }
 ``` 
  - create storage bucket
-```bash  
+```bash
 ~$ gsutil mb -c regional -l europe-west1 -p infra-179717 gs://infra-179717-bucket
 Creating gs://infra-179717-bucket/...
 
@@ -111,7 +109,7 @@ Creating gs://infra-179717-bucket/...
 gs://infra-179717-bucket/
 ```
  - build instances
-```bash  
+```bash
 ~/terraform/{prod | stage}$ terraform init
 ~/terraform/{prod | stage}$ terraform plan
 ~/terraform/{prod | stage}$ terraform apply
@@ -119,7 +117,7 @@ gs://infra-179717-bucket/
 
 
 Do not forget delete resources
-```bash  
+```bash
 ~/terraform/{prod | stage}$ terraform destroy
 
 ~$ gsutil rm -r gs://infra-179717-bucket/
@@ -129,35 +127,34 @@ Operation completed over 1 objects.
 Removing gs://infra-179717-bucket/...
 ```
 
---- 
 ## Homework 10
 
 Use [HashiCorp Packer](https://www.packer.io/intro/index.html) and [Red Hat Ansible](https://www.ansible.com) to build `reddit-app` and `reddit-db` images in GCE:
  - install `Ansible` and required dependencies
-```bash   
+```bash
 ~$ pip install -r ./ansible/requirements.txt
 ~$ ansible --version
 ansible 2.3.2.0
-``` 
+```
  - check `firewall-rules`:
-```bash  
+```bash
 ~$ gcloud compute firewall-rules list
 NAME                    NETWORK  DIRECTION  PRIORITY  ALLOW                         DENY
 default-allow-icmp      default  INGRESS    65534     icmp
 default-allow-internal  default  INGRESS    65534     tcp:0-65535,udp:0-65535,icmp
 default-allow-rdp       default  INGRESS    65534     tcp:3389
 default-allow-ssh       default  INGRESS    65534     tcp:22
-``` 
+```
  - create `default-allow-ssh` if you do not have this one
- ```ssh  
- ~$ gcloud compute firewall-rules create default-allow-ssh \ 
-  --allow tcp:22 --priority=65534 \ 
-  --description="Allow SSH connections" \ 
+ ```ssh
+ ~$ gcloud compute firewall-rules create default-allow-ssh \
+  --allow tcp:22 --priority=65534 \
+  --description="Allow SSH connections" \
   --direction=INGRESS
- ``` 
+ ```
  - use `Packer` templates with `Ansible` playbooks (instead of bash scripts) to build images with prepared installations
- ```bash 
-~$packer build \ 
+ ```bash
+~$packer build \
   -var 'machine_type=f1-micro' \
   -var 'project_id=infra-179717' \
   -var 'source_image=ubuntu-1604-xenial-v20170919' \
@@ -168,22 +165,21 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
   -var 'project_id=infra-179717' \
   -var 'source_image=ubuntu-1604-xenial-v20170919' \
 ./packer/app.json
- ``` 
+ ```
 
---- 
 ## Homework 11, 12
 
 1.1) Configure `reddit-app` and `reddit-db` instances in GCE
  - make an inventory file for with custom IP's
-```ssh  
+```ssh
 $ cat hosts
 [app]
 appserver ansible_ssh_host=35.195.190.123
 [db]
 dbserver ansible_ssh_host=35.189.224.149
-``` 
+```
  - make [Red Hat Ansible](https://www.ansible.com) common config file
-```ssh 
+```ssh
 ~$ cat ansible.cfg
 [defaults]
 inventory = hosts
@@ -200,18 +196,18 @@ appserver | SUCCESS => {
 "changed": false,
 "ping": "pong"
 }
-``` 
+```
 
 1.2) Apply [Red Hat Ansible](https://www.ansible.com) playbooks
  - use 1 file and 1 playbook; need to choose host (app | db) and concreate tag (db-tag | app-tag | deploy-tag)
-```ssh 
+```ssh
 ~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit db --tags db-tag
 ~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags app-tag
 ~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags deploy-tag
-``` 
+```
 
  - or use 1 file and multiple playbooks; need to choose concreate tag (db-tag | app-tag | deploy-tag)
-```ssh 
+```ssh
 ~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag --check
 ~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag
 ~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags app-tag --check
@@ -221,7 +217,7 @@ appserver | SUCCESS => {
 ```
 
  - or use multiple files and multiple playbooks; nothing to choose, invoke one file only with ansible roles and environments
-```ssh 
+```ssh
 ansible-playbook site.yml --check
 ansible-playbook site.yml
-``` 
+```

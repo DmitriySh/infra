@@ -41,7 +41,7 @@
   handlers:
     - name: reload puma
       systemd: name=puma state=reloaded
- 
+
 - name: Deploy reddit app
   hosts: app
   tags: deploy-tag
