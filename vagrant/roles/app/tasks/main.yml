@@ -1,0 +1,10 @@
+---
+# tasks file for app
+
+- name: show info about the env this host belongs to
+  debug:
+    msg: "This host is in {{ env }} environment!!!"
+
+- include: puma.yml
+- include: ruby.yml
+
