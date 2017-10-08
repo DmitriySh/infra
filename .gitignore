@@ -17,5 +17,5 @@
 
 # Vagrant
 .vagrant/
-*.logs
+*.log
 
