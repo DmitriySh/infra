@@ -1,5 +1,0 @@
----
-- include: db_vgr.yml
-- include: app_vgr.yml
-- include: deploy_vgr.yml
-
