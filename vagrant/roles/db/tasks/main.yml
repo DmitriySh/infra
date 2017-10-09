@@ -6,4 +6,3 @@
 
 - include: install_mongo.yml
 - include: config_mongo.yml
-

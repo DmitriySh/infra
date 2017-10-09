@@ -1,3 +1,4 @@
+---
 - name: Add APT key
   apt_key:
     id: "EA312927"
