@@ -7,7 +7,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 # check if MongoDB is listen concrete host and port
 def test_mongo_host_port(host):
-    socket = host.socket("tcp://127.0.0.1:27017")
+    socket = host.socket("tcp://0.0.0.0:27017")
     assert socket.is_listening
 
 # check if MongoDB is enabled and running
