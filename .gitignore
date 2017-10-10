@@ -10,7 +10,7 @@
 *.retry
 
 # Intellij
-.idea/
+.idea
 *.iml
 *.iws
 *.ipr
@@ -20,4 +20,7 @@
 *.log
 
 # Molecule
-.molecule/
+.molecule
+.cache
+__pycache__
+
