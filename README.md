@@ -226,11 +226,11 @@ appserver | SUCCESS => {
 
 [HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) like as [HashiCorp Terraform](https://www.terraform.io/intro/index.html) 
 is a tool for building and managing virtual machine environments but in a single workflow.
-`Terraform` saves local files in `.terraform` and `Vagrant` saves in `.vagrant`.
+[HashiCorp Terraform](https://www.terraform.io/intro/index.html) saves local files in `.terraform` and [HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) saves in `.vagrant`.
 
 1.1) Use [HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) and [Oracle VirtualBox](https://www.virtualbox.org) 
 (or MWare, Amazon EC2, LXC и libvirt) to create 2 virtual machines with declarative definitions: `dbserver` and `appserver`
- - don't do this but if you want to create new `Vagrantfile` file or read more about configurations:
+ - don't do this but if you want to create new `Vagrantfile` or read more about configurations:
 ```bash
 ~/vagrant$ vagrant init 
  ```
@@ -240,7 +240,7 @@ is a tool for building and managing virtual machine environments but in a single
 ~/vagrant$ vagrant status
 ~/vagrant$ vagrant box list
 ```
- - enter to each vm by ssh
+ - connect to each vm by `ssh`
 ```bash
 ~/vagrant$ vagrant ssh appserver
 ~/vagrant$ vagrant ssh dbserver
@@ -249,10 +249,55 @@ is a tool for building and managing virtual machine environments but in a single
 ```bash
 ~/vagrant$ cat .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
 ```
+ - open internet browser by URL <http://10.10.10.20:9292> to check `appserver` 
  - at the end delete the instances of [Oracle VirtualBox](https://www.virtualbox.org)
 ```bash
 ~/vagrant$ vagrant destroy -f
+==> appserver: Forcing shutdown of VM...
+==> appserver: Destroying VM and associated drives...
+==> dbserver: Forcing shutdown of VM...
+==> dbserver: Destroying VM and associated drives...
 ```
 
-1.2) 
+1.2) Use [Testinfra](http://testinfra.readthedocs.io) to write unit tests in `Python` and 
+[Metacloud Molecule](http://molecule.readthedocs.io/en/latest/porting.html) to test actual state of virtual instances 
+configured by [Red Hat Ansible](https://www.ansible.com)
+ - initialize scenario for role `db`
+```bash
+~/vagrant/roles/db$ molecule init scenario --scenario-name default -r db -d vagrant
+```
+ - create test instance by [HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) and connect by `ssh` to check instance
+ ```bash
+~vagrant/roles/db$ molecule create
+~vagrant/roles/db$ molecule list
+~vagrant/roles/db$ molecule login -h instance
+``` 
+  - apply inner molecule playbook and run tests
+ ```bash
+~vagrant/roles/db$ molecule converge
+~vagrant/roles/db$ molecule verify
+--> Test matrix
 
+└── default
+    └── verify
+--> Scenario: 'default'
+--> Action: 'verify'
+--> Executing Testinfra tests found in /Users/dima/programming/git/otus/infra/vagrant/roles/db/molecule/default/tests/...
+    ============================= test session starts ==============================
+    platform darwin -- Python 2.7.14, pytest-3.2.3, py-1.4.34, pluggy-0.4.0
+    rootdir: /Users/dima/programming/git/otus/infra/vagrant/roles/db/molecule/default, inifile:
+    plugins: testinfra-1.6.3
+collected 3 items
+
+    tests/test_default.py ...
+
+    =============================== warnings summary ===============================
+    None
+      Module already imported so can not be re-written: testinfra
+      File fixture is deprecated. Use host fixture and get File module with host.file
+      TestinfraBackend fixture is deprecated. Use host fixture and get backend with host.backend
+
+    -- Docs: http://doc.pytest.org/en/latest/warnings.html
+    ===================== 3 passed, 3 warnings in 3.25 seconds =====================
+Verifier completed successfully.
+```
