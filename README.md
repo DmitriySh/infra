@@ -146,7 +146,7 @@ default-allow-rdp       default  INGRESS    65534     tcp:3389
 default-allow-ssh       default  INGRESS    65534     tcp:22
 ```
  - create `default-allow-ssh` if you do not have this one
- ```ssh
+ ```bash
  ~$ gcloud compute firewall-rules create default-allow-ssh \
   --allow tcp:22 --priority=65534 \
   --description="Allow SSH connections" \
@@ -171,7 +171,7 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
 
 1.1) Configure `reddit-app` and `reddit-db` instances in GCE
  - make an inventory file for with custom IP's
-```ssh
+```bash
 $ cat hosts
 [app]
 appserver ansible_ssh_host=35.195.190.123
@@ -179,7 +179,7 @@ appserver ansible_ssh_host=35.195.190.123
 dbserver ansible_ssh_host=35.189.224.149
 ```
  - make [Red Hat Ansible](https://www.ansible.com) common config file
-```ssh
+```bash
 ~$ cat ansible.cfg
 [defaults]
 inventory = hosts
@@ -200,24 +200,59 @@ appserver | SUCCESS => {
 
 1.2) Apply [Red Hat Ansible](https://www.ansible.com) playbooks
  - use 1 file and 1 playbook; need to choose host (app | db) and concreate tag (db-tag | app-tag | deploy-tag)
-```ssh
-~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit db --tags db-tag
-~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags app-tag
-~$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags deploy-tag
+```bash
+~/ansible$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit db --tags db-tag
+~/ansible$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags app-tag
+~/ansible$ ansible-playbook -i environments/stage/hosts reddit_app_db_one_playbook.yml --limit app --tags deploy-tag
 ```
 
  - or use 1 file and multiple playbooks; need to choose concreate tag (db-tag | app-tag | deploy-tag)
-```ssh
-~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag --check
-~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag
-~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags app-tag --check
-~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags app-tag
-~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags deploy-tag --check
-~$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags deploy-tag
+```bash
+~/ansible$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag --check
+~/ansible$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags db-tag
+~/ansible$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags app-tag --check
+~/ansible$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags app-tag
+~/ansible$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags deploy-tag --check
+~/ansible$ ansible-playbook reddit_app_db_multiple_playbooks.yml --tags deploy-tag
 ```
 
  - or use multiple files and multiple playbooks; nothing to choose, invoke one file only with ansible roles and environments
-```ssh
-ansible-playbook site.yml --check
-ansible-playbook site.yml
+```bash
+~/ansible$ ansible-playbook site.yml --check
+~/ansible$ ansible-playbook site.yml
 ```
+
+## Homework 13
+
+[HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) like as [HashiCorp Terraform](https://www.terraform.io/intro/index.html) 
+is a tool for building and managing virtual machine environments but in a single workflow.
+`Terraform` saves local files in `.terraform` and `Vagrant` saves in `.vagrant`.
+
+1.1) Use [HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) and [Oracle VirtualBox](https://www.virtualbox.org) 
+(or MWare, Amazon EC2, LXC и libvirt) to create 2 virtual machines with declarative definitions: `dbserver` and `appserver`
+ - don't do this but if you want to create new `Vagrantfile` file or read more about configurations:
+```bash
+~/vagrant$ vagrant init 
+ ```
+ - create vm and show status information
+```bash
+~/vagrant$ vagrant up
+~/vagrant$ vagrant status
+~/vagrant$ vagrant box list
+```
+ - enter to each vm by ssh
+```bash
+~/vagrant$ vagrant ssh appserver
+~/vagrant$ vagrant ssh dbserver
+```
+ - [HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) generates dynamic inventory file
+```bash
+~/vagrant$ cat .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+```
+ - at the end delete the instances of [Oracle VirtualBox](https://www.virtualbox.org)
+```bash
+~/vagrant$ vagrant destroy -f
+```
+
+1.2) 
+
