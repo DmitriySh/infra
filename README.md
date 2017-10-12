@@ -245,6 +245,14 @@ is a tool for building and managing virtual machine environments but in a single
 ~/vagrant$ vagrant ssh appserver
 ~/vagrant$ vagrant ssh dbserver
 ```
+ - install [Red Hat Ansible](https://www.ansible.com) and required dependencies
+```bash
+~/vagrant$ pip install -r ./ansible/requirements.txt
+~/vagrant$ molecule --version
+molecule, version 2.1.0
+~/vagrant$ ansible --version
+ansible 2.3.2.0
+```
  - [HashiCorp Vagrant](https://www.vagrantup.com/intro/index.html) generates dynamic inventory file
 ```bash
 ~/vagrant$ cat .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
