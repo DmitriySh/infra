@@ -23,4 +23,3 @@
     enabled: yes
     state: started
   tags: install
-

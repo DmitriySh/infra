@@ -1,20 +1,22 @@
-- name: Deploy reddit app
+- name: Deploy App
   hosts: app
-  tags: deploy-tag
+  vars:
+    deploy_user: appuser
+
   tasks:
     - name: fetch the latest version of application code
       git:
-         repo: 'https://github.com/Artemmkin/reddit.git'
-         dest: /home/appuser/reddit
-         version: monolith
+        repo: 'https://github.com/Artemmkin/reddit.git'
+        dest: "/home/{{ deploy_user }}/reddit"
+        version: monolith
       notify: restart puma
+
     - name: bundle install
       bundler:
-         state: present
-         chdir: /home/appuser/reddit
+        state: present
+        chdir: "/home/{{ deploy_user }}/reddit"
 
   handlers:
-    - name: restart puma
-      become: true
-      systemd: name=puma state=restarted
-
+  - name: restart puma
+    become: true
+    systemd: name=puma state=restarted

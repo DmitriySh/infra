@@ -5,6 +5,5 @@
   debug:
     msg: "This host is in {{ env }} environment!!!"
 
-- include: puma.yml
 - include: ruby.yml
-
+- include: puma.yml

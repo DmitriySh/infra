@@ -1,3 +1,4 @@
+---
 # Setup and configure ruby things for reddit app
 - name: Install ruby and rubygems and required packages
   apt: "name={{ item }} state=present"
