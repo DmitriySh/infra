@@ -158,13 +158,13 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
   -var 'machine_type=f1-micro' \
   -var 'project_id=infra-179717' \
   -var 'source_image=ubuntu-1604-xenial-v20170919' \
-./packer/db.json
+./packer/db_ansible.json
 
 ~$packer build \
   -var 'machine_type=f1-micro' \
   -var 'project_id=infra-179717' \
   -var 'source_image=ubuntu-1604-xenial-v20170919' \
-./packer/app.json
+./packer/app_ansible.json
  ```
 
 ## Homework 11, 12
