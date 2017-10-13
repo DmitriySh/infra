@@ -4,5 +4,6 @@
   gather_facts: no
   become: yes
 
+  # use tag: install
   roles:
     - db
