@@ -25,7 +25,8 @@
   "provisioners": [
     {
       "type": "ansible",
-      "playbook_file": "ansible/packer_reddit_app.yml"
+      "playbook_file": "ansible/packer_reddit_app.yml",
+      "extra_arguments": "--tags=ruby"
     }
   ]
 }
