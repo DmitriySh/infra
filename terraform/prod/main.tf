@@ -1,4 +1,5 @@
 provider "google" {
+  version = "= 0.1.3"
   project = "${var.project}"
   region  = "${var.region}"
 }
@@ -19,4 +20,3 @@ module vpc {
   source        = "../modules/vpc"
   source_ranges = "${var.source_ranges}"
 }
-
