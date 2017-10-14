@@ -185,7 +185,7 @@ dbserver ansible_ssh_host=35.189.224.149
 [defaults]
 inventory = hosts
 remote_user = appuser
-private_key_file = ~/.ssh/appuser
+private_key_file = ~/.ssh/otus_devops_appuser
 host_key_checking = False
 
 ~$ ansible all -m ping
