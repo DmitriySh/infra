@@ -56,20 +56,20 @@ reddit-app
 ## Homework 8, 9
 
 1.1) Use [HashiCorp Terraform](https://www.terraform.io/intro/index.html) to build `reddit-app` and `reddit-db` instances in GCE:
- - use [HashiCorp Packer](https://www.packer.io/intro/index.html) to build images with prepared installation
+ - use [HashiCorp Packer](https://www.packer.io/intro/index.html) and `Bash` to build images with prepared installation
 
 ```bash
 ~$ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=infra-179717' \
  -var 'source_image=ubuntu-1604-xenial-v20170815a' \
-./packer/db.json
+./packer/db_shell.json
 
 ~$ packer build \
  -var 'machine_type=f1-micro' \
  -var 'project_id=infra-179717' \
  -var 'source_image=ubuntu-1604-xenial-v20170815a' \
-./packer/app.json
+./packer/app_shell.json
 ```
  - use required file `variables.tf` for _each module_ and _each environment_ with definition of needed variables
  - create an internal file `terraform.tfvars` with custom values of variables
@@ -79,7 +79,7 @@ public_key_path = "~/.ssh/otus_devops_appuser.pub"
 private_key_path = "~/.ssh/otus_devops_appuser"
 db_disk_image = "reddit-db-1505646807"
 app_disk_image = "reddit-app-1505646464"
-disk_image = "reddit-base-3-1505269146"
+disk_image = "reddit-base-1505269146"
 ```
  - build instances
 ```bash
@@ -152,7 +152,8 @@ default-allow-ssh       default  INGRESS    65534     tcp:22
   --description="Allow SSH connections" \
   --direction=INGRESS
  ```
- - use `Packer` templates with `Ansible` playbooks (instead of bash scripts) to build images with prepared installations
+ - use [HashiCorp Packer](https://www.packer.io/intro/index.html) templates with `[Red Hat Ansible](https://www.ansible.com) playbooks 
+ (instead of bash scripts) to build images with prepared installations
  ```bash
 ~$packer build \
   -var 'machine_type=f1-micro' \
@@ -296,16 +297,5 @@ configured by [Red Hat Ansible](https://www.ansible.com)
     rootdir: /Users/dima/programming/git/otus/infra/vagrant/roles/db/molecule/default, inifile:
     plugins: testinfra-1.6.3
 collected 3 items
-
-    tests/test_default.py ...
-
-    =============================== warnings summary ===============================
-    None
-      Module already imported so can not be re-written: testinfra
-      File fixture is deprecated. Use host fixture and get File module with host.file
-      TestinfraBackend fixture is deprecated. Use host fixture and get backend with host.backend
-
-    -- Docs: http://doc.pytest.org/en/latest/warnings.html
-    ===================== 3 passed, 3 warnings in 3.25 seconds =====================
 Verifier completed successfully.
 ```
