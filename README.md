@@ -87,7 +87,11 @@ disk_image = "reddit-base-1505269146"
 ~/terraform/{prod | stage}$ terraform plan
 ~/terraform/{prod | stage}$ terraform apply
 ```
-
+ - you can import existing infrastructure that were available in GCE and change state of [HashiCorp Terraform](https://www.terraform.io/intro/index.html)
+ before `apply`; example: 
+```bash
+~/terraform/{prod | stage}$ terraform import module.vpc.google_compute_firewall.firewall_ssh default-allow-ssh
+``` 
 1.2) Use [Google Cloud Storage](https://cloud.google.com/storage/) to store a `terraform` state file
  - create file `backend.tf` next to `main.tf`
 ```bash
