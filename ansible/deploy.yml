@@ -1,5 +1,5 @@
 - name: Deploy App
-  hosts: app
+  hosts: tag_app
   vars:
     deploy_user: appuser
 
