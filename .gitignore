@@ -10,7 +10,17 @@
 *.retry
 
 # Intellij
-.idea/
+.idea
 *.iml
 *.iws
 *.ipr
+
+# Vagrant
+.vagrant/
+*.log
+
+# Molecule
+.molecule
+.cache
+__pycache__
+

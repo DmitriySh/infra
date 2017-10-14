@@ -1,0 +1,8 @@
+---
+# tasks file for db
+- name: show info about the env this host belongs to
+  debug:
+    msg: "This host is in {{ env }} environment!!!"
+
+- include: install_mongo.yml
+- include: config_mongo.yml

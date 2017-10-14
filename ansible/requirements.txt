@@ -8,11 +8,14 @@ idna==2.6
 ipaddress==1.0.18
 Jinja2==2.9.6
 MarkupSafe==1.0
+molecule==2.1.0
 paramiko==2.2.1
 pyasn1==0.3.4
 pycparser==2.18
 pycrypto==2.6.1
 PyNaCl==1.1.2
 PyYAML==3.12
+python-vagrant==0.5.15
 six==1.10.0
+testinfra==1.6.3
 
