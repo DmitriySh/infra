@@ -13,7 +13,7 @@
       "zone": "europe-west1-b",
       "ssh_username": "appuser",
       "machine_type": "{{user `machine_type`}}",
-      "image_description": "Homework 9 by Packer; image has Ruby",
+      "image_description": "Homework 10 by Packer; image has Ruby",
       "disk_size": "15",
       "disk_type": "pd-standard",
       "network": "default",
